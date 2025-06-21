@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: absensiman16jakarta
+    env: php
+    buildCommand: ./build.sh
+    startCommand: ""
+    branch: main
+    rootDir: .
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
