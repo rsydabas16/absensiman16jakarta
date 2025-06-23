@@ -34,7 +34,7 @@
           <select class="form-select @error('kelas_id') is-invalid @enderror" id="kelas_id" name="kelas_id" required>
             <option value="">-- Pilih Kelas --</option>
             @foreach($kelasList as $k)
-              <option value="{{ $k->id }}" {{ old('kelas_id') == $k->id ? 'selected' : '' }}>{{ $k->jurusan }}</option>
+              <option value="{{ $k->id }}" {{ old('kelas_id') == $k->id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
             @endforeach
           </select>
           @error('kelas_id')
