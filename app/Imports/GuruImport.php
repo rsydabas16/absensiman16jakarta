@@ -94,15 +94,17 @@ class GuruImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnErro
         return $this->customErrors;
     }
 
-    public function getAllErrors()
-    {
-        // Gabungkan custom errors dengan errors dari trait
-        $traitErrors = collect($this->errors())->map(function($error) {
-            return $error->getMessage();
-        })->toArray();
-        
-        return array_merge($this->customErrors, $traitErrors);
-    }
+   public function getAllErrors()
+{
+    // Hindari error jika $this->errors() berisi string
+    $traitErrors = collect($this->errors())->map(function ($error) {
+        return is_object($error) && method_exists($error, 'getMessage')
+            ? $error->getMessage()
+            : $error;
+    })->toArray();
+
+    return array_merge($this->customErrors, $traitErrors);
+}
 }
 
 
