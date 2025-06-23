@@ -173,7 +173,7 @@ Route::middleware(['auth', 'kepala.sekolah'])->prefix('kepala_sekolah')->name('k
 });
 
 // Telegram webhook
-Route::post('/telegram/webhook/{secret}', [TelegramController::class, 'webhook']);
+Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
 
 
 
