@@ -14,9 +14,6 @@ class TelegramController extends Controller
 {
     public function webhook(Request $request)
     {
-        if ($secret !== env('TELEGRAM_WEBHOOK_SECRET')) {
-        return response('Unauthorized', 401);
-    }
         // Log semua request yang masuk
         Log::info('=== TELEGRAM WEBHOOK CALLED ===');
         Log::info('Request IP: ' . $request->ip());
