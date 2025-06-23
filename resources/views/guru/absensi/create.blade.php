@@ -342,7 +342,7 @@
             
             // Send to server
             $.ajax({
-                url: "{{ route('guru.absensi.scan-qr') }}",
+                url: "{{ secure_url('guru.absensi.scan-qr') }}",
                 method: "POST",
                 data: {
                     _token: "{{ csrf_token() }}",
