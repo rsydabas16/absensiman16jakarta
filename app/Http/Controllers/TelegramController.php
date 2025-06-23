@@ -59,12 +59,12 @@ class TelegramController extends Controller
     private function validateTelegramRequest(Request $request)
     {
         // Basic validation - bisa ditambah dengan secret token validation
-        $userAgent = $request->header('User-Agent', '');
+        // $userAgent = $request->header('User-Agent', '');
         
         // Telegram biasanya mengirim dengan user agent yang mengandung "TelegramBot"
-        if (app()->environment('production')) {
-            return strpos($userAgent, 'TelegramBot') !== false;
-        }
+        // if (app()->environment('production')) {
+        //     return strpos($userAgent, 'TelegramBot') !== false;
+        // }
         
         // Di development, skip validation
         return true;
