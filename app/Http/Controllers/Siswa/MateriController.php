@@ -99,11 +99,11 @@ class MateriController extends Controller
             ->whereHas('jadwalPelajaran', function($q) use ($siswa) {
                 $q->where('kelas_id', $siswa->kelas_id);
             })
-            ->where('status', 'tidak_hadir')
-            ->whereNotNull('tugas')
-            ->whereDate('tanggal', '>=', Carbon::now()->subDays(7)) // 7 hari terakhir
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        ->whereIn('status', ['tidak_hadir', 'izin', 'sakit', 'cuti', 'dinas_luar'])
+        ->whereRaw("tugas IS NOT NULL AND tugas != ''")
+        ->whereDate('tanggal', '>=', Carbon::now()->subDays(7))
+        ->orderBy('tanggal', 'desc')
+        ->get();
         
         return view('siswa.materi.tugas', compact('tugasList'));
     }
