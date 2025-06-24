@@ -159,11 +159,17 @@
                         window.location.href = "{{ route('guru.absensi.index') }}";
                     }, 2000);
                 },
-                error: function(xhr) {
-                    alert(xhr.responseJSON.message || 'QR Code tidak valid!');
-                    // Restart scanner
-                    html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, onScanError);
-                }
+               error: function(xhr) {
+    let msg = 'QR Code tidak valid!';
+    if (xhr.responseJSON && xhr.responseJSON.message) {
+        msg = xhr.responseJSON.message;
+    }
+    alert(msg);
+
+    // Restart scanner (optional)
+    html5QrCode.start({ facingMode: "environment" }, config, decodedTextCallback, errorCallback);
+}
+
             });
         },
         (errorMessage) => {
