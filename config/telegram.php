@@ -42,6 +42,9 @@ return [
         ],
     ],
     'default' => 'mybot',
+'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET', 'default-secret'),
+
+
     // 'async_requests' => env('TELEGRAM_ASYNC_REQUESTS', false),
     // 'http_client_handler' => null,
     // 'resolve_command_dependencies' => true,
