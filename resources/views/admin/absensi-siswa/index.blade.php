@@ -170,10 +170,115 @@
                     </table>
                 </div>
 
-                <!-- Pagination -->
-                <div class="mt-4">
-                    {{ $absensiSiswa->withQueryString()->links() }}
-                </div>
+                <!-- Improved Pagination -->
+<div class="card-footer d-flex justify-content-between align-items-center">
+    <div class="text-muted small">
+        Menampilkan {{ $absensiSiswa>firstItem() ?? 0 }} sampai {{ $absensiSiswa>lastItem() ?? 0 }} 
+        dari {{ $absensiSiswa>total() }} entri
+    </div>
+    
+    @if($absensiSiswa>hasPages())
+    <nav aria-label="Table pagination">
+        <ul class="pagination pagination-sm mb-0">
+            {{-- Previous Page Link --}}
+            @if ($absensiSiswa>onFirstPage())
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <i class="bx bx-chevron-left"></i> Previous
+                    </span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->previousPageUrl() }}">
+                        <i class="bx bx-chevron-left"></i> Previous
+                    </a>
+                </li>
+            @endif
+
+            {{-- Pagination Elements with Limited Display --}}
+            @php
+                $start = 1;
+                $end = $absensiSiswa>lastPage();
+                $current = $absensiSiswa>currentPage();
+                $last = $absensiSiswa>lastPage();
+                
+                // Calculate visible page numbers (max 5)
+                if ($last <= 7) {
+                    // If 7 or fewer pages, show all
+                    $showPages = range(1, $last);
+                } else {
+                    // Show first, last, current, and 2 around current
+                    $showPages = [];
+                    
+                    // Always show first page
+                    $showPages[] = 1;
+                    
+                    // Calculate range around current page
+                    $rangeStart = max(2, $current - 1);
+                    $rangeEnd = min($last - 1, $current + 1);
+                    
+                    // Adjust range if at the beginning or end
+                    if ($current <= 3) {
+                        $rangeEnd = 4;
+                    } elseif ($current >= $last - 2) {
+                        $rangeStart = $last - 3;
+                    }
+                    
+                    // Add pages in range
+                    for ($i = $rangeStart; $i <= $rangeEnd; $i++) {
+                        $showPages[] = $i;
+                    }
+                    
+                    // Always show last page
+                    $showPages[] = $last;
+                    
+                    // Remove duplicates and sort
+                    $showPages = array_unique($showPages);
+                    sort($showPages);
+                }
+                
+                $previousPage = 0;
+            @endphp
+            
+            @foreach ($showPages as $page)
+                {{-- Add ellipsis if there's a gap --}}
+                @if ($previousPage > 0 && $page > $previousPage + 1)
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                @endif
+                
+                {{-- Page number --}}
+                @if ($page == $current)
+                    <li class="page-item active">
+                        <span class="page-link">{{ $page }}</span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->url($page) }}">{{ $page }}</a>
+                    </li>
+                @endif
+                
+                @php $previousPage = $page; @endphp
+            @endforeach
+
+            {{-- Next Page Link --}}
+            @if ($siswa->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->nextPageUrl() }}">
+                        Next <i class="bx bx-chevron-right"></i>
+                    </a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Next <i class="bx bx-chevron-right"></i>
+                    </span>
+                </li>
+            @endif
+        </ul>
+    </nav>
+    @endif
             @else
                 <div class="text-center py-4">
                     <i class="bx bx-search-alt-2 display-4 text-muted"></i>
