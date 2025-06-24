@@ -11,50 +11,26 @@ class SetupTelegramWebhook extends Command
     protected $signature = 'telegram:setup-webhook';
     protected $description = 'Setup webhook untuk Telegram bot';
     
-    // public function handle()
-    // {
-    //     $url = config('telegram.bots.mybot.webhook_url');
-        
-    //     if (empty($url)) {
-    //         $this->error('Webhook URL tidak ditemukan di config. Set TELEGRAM_WEBHOOK_URL di .env');
-    //         return 1;
-    //     }
-        
-    //     try {
-    //         $response = Telegram::setWebhook(['url' => $url]);
-    //         $this->info('Webhook berhasil disetup: ' . $url);
-    //         $this->info('Response: ' . json_encode($response));
-    //         return 0;
-    //     } catch (\Exception $e) {
-    //         $this->error('Error: ' . $e->getMessage());
-    //         return 1;
-    //     }
-    // }
-
     public function handle()
-{
-    $url = config('telegram.bots.mybot.webhook_url');
-    $secret = config('telegram.bots.mybot.webhook_secret', env('TELEGRAM_WEBHOOK_SECRET'));
-
-    if (empty($url)) {
-        $this->error('Webhook URL tidak ditemukan di config. Set TELEGRAM_WEBHOOK_URL di .env');
-        return 1;
+    {
+        $url = config('telegram.bots.mybot.webhook_url');
+        
+        if (empty($url)) {
+            $this->error('Webhook URL tidak ditemukan di config. Set TELEGRAM_WEBHOOK_URL di .env');
+            return 1;
+        }
+        
+        try {
+            $response = Telegram::setWebhook(['url' => $url]);
+            $this->info('Webhook berhasil disetup: ' . $url);
+            $this->info('Response: ' . json_encode($response));
+            return 0;
+        } catch (\Exception $e) {
+            $this->error('Error: ' . $e->getMessage());
+            return 1;
+        }
     }
 
-    try {
-        $response = Telegram::setWebhook([
-            'url' => $url,
-            'secret_token' => $secret, // Jika kamu pakai secret token Telegram
-            'drop_pending_updates' => true, // opsional: buang update lama
-        ]);
-
-        $this->info('Webhook berhasil disetup: ' . $url);
-        $this->info('Response: ' . json_encode($response));
-        return 0;
-    } catch (\Exception $e) {
-        $this->error('Error: ' . $e->getMessage());
-        return 1;
-    }
-}
+    
 
 }
