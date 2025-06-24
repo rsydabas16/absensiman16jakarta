@@ -263,7 +263,7 @@
             @endforeach
 
             {{-- Next Page Link --}}
-            @if ($siswa->hasMorePages())
+            @if ($absensiSiswa>hasMorePages())
                 <li class="page-item">
                     <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->nextPageUrl() }}">
                         Next <i class="bx bx-chevron-right"></i>
