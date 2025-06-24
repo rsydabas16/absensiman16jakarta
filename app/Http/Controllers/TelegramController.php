@@ -105,33 +105,76 @@ class TelegramController extends Controller
         }
     }
     
-    private function handleCommand($chatId, $text, $from, $message)
-    {
-        $command = strtolower(explode(' ', $text)[0]);
+    // private function handleCommand($chatId, $text, $from, $message)
+    // {
+    //     $command = strtolower(explode(' ', $text)[0]);
         
-        Log::info("Processing command: {$command}");
+    //     Log::info("Processing command: {$command}");
         
-        switch ($command) {
-            case '/start':
-                $this->handleStart($chatId, $from, $message);
-                break;
+    //     switch ($command) {
+    //         case '/start':
+    //             $this->handleStart($chatId, $from, $message);
+    //             break;
                 
-            case '/connect':
-                $this->handleConnect($chatId, $text, $from);
-                break;
+    //         case '/connect':
+    //             $this->handleConnect($chatId, $text, $from);
+    //             break;
                 
-            case '/help':
-                $this->handleHelp($chatId);
-                break;
+    //         case '/help':
+    //             $this->handleHelp($chatId);
+    //             break;
                 
-            case '/status':
-                $this->handleStatus($chatId, $from);
-                break;
+    //         case '/status':
+    //             $this->handleStatus($chatId, $from);
+    //             break;
                 
-            default:
-                $this->handleUnknownCommand($chatId, $command);
-        }
+    //         default:
+    //             $this->handleUnknownCommand($chatId, $command);
+    //     }
+    // }
+    private function handleConnect($chatId, $text, $from)
+{
+    Log::info("=== HANDLING /connect COMMAND ===");
+    Log::info("Full text: {$text}");
+    
+    $parts = explode(' ', trim($text));
+    Log::info("Parts: " . json_encode($parts));
+    
+    if (count($parts) < 2) {
+        // ... existing code
+        return;
     }
+    
+    $nomorInduk = trim($parts[1]);
+    Log::info("Searching for nomor_induk: {$nomorInduk}");
+    
+    try {
+        // Test database connection first
+        Log::info("Testing database connection...");
+        $totalUsers = User::count();
+        Log::info("Total users in database: {$totalUsers}");
+        
+        // List some nomor_induk for debugging
+        $sampleUsers = User::select('nomor_induk', 'name')->take(3)->get();
+        Log::info("Sample users: " . json_encode($sampleUsers));
+        
+        $user = User::where('nomor_induk', $nomorInduk)->first();
+        
+        if (!$user) {
+            Log::warning("User not found with nomor_induk: {$nomorInduk}");
+            // ... rest of your code
+        }
+        // ... rest of existing code
+    } catch (\Exception $e) {
+        Log::error("Database error in handleConnect: " . $e->getMessage());
+        Log::error("Stack trace: " . $e->getTraceAsString());
+        
+        $message = "❌ *Terjadi kesalahan database!*\n\n";
+        $message .= "Error: " . $e->getMessage();
+        
+        $this->sendMessage($chatId, $message);
+    }
+}
     
     private function handleStart($chatId, $from, $message)
     {
