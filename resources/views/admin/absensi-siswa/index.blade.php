@@ -173,15 +173,15 @@
                 <!-- Improved Pagination -->
 <div class="card-footer d-flex justify-content-between align-items-center">
     <div class="text-muted small">
-        Menampilkan {{ $absensiSiswa>firstItem() ?? 0 }} sampai {{ $absensiSiswa>lastItem() ?? 0 }} 
-        dari {{ $absensiSiswa>total() }} entri
+        Menampilkan {{ $absensiSiswa->firstItem() ?? 0 }} sampai {{ $absensiSiswa->lastItem() ?? 0 }} 
+        dari {{ $absensiSiswa->total() }} entri
     </div>
     
-    @if($absensiSiswa>hasPages())
+    @if($absensiSiswa->hasPages())
     <nav aria-label="Table pagination">
         <ul class="pagination pagination-sm mb-0">
             {{-- Previous Page Link --}}
-            @if ($absensiSiswa>onFirstPage())
+            @if ($absensiSiswa->onFirstPage())
                 <li class="page-item disabled">
                     <span class="page-link">
                         <i class="bx bx-chevron-left"></i> Previous
@@ -189,7 +189,7 @@
                 </li>
             @else
                 <li class="page-item">
-                    <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->previousPageUrl() }}">
+                    <a class="page-link" href="{{ $absensiSiswa->appends(request()->query())->previousPageUrl() }}">
                         <i class="bx bx-chevron-left"></i> Previous
                     </a>
                 </li>
@@ -198,9 +198,9 @@
             {{-- Pagination Elements with Limited Display --}}
             @php
                 $start = 1;
-                $end = $absensiSiswa>lastPage();
-                $current = $absensiSiswa>currentPage();
-                $last = $absensiSiswa>lastPage();
+                $end = $absensiSiswa->lastPage();
+                $current = $absensiSiswa->currentPage();
+                $last = $absensiSiswa->lastPage();
                 
                 // Calculate visible page numbers (max 5)
                 if ($last <= 7) {
@@ -255,7 +255,7 @@
                     </li>
                 @else
                     <li class="page-item">
-                        <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->url($page) }}">{{ $page }}</a>
+                        <a class="page-link" href="{{ $absensiSiswa->appends(request()->query())->url($page) }}">{{ $page }}</a>
                     </li>
                 @endif
                 
@@ -263,9 +263,9 @@
             @endforeach
 
             {{-- Next Page Link --}}
-            @if ($absensiSiswa>hasMorePages())
+            @if ($absensiSiswa->hasMorePages())
                 <li class="page-item">
-                    <a class="page-link" href="{{ $absensiSiswa>appends(request()->query())->nextPageUrl() }}">
+                    <a class="page-link" href="{{ $absensiSiswa->appends(request()->query())->nextPageUrl() }}">
                         Next <i class="bx bx-chevron-right"></i>
                     </a>
                 </li>
