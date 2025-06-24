@@ -5,10 +5,19 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\TelegramService;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
     // ...
+
+
+public function boot()
+{
+    if (env('APP_ENV') !== 'local') {
+        URL::forceScheme('https');
+    }
+}
 
     public function register(): void
     {
